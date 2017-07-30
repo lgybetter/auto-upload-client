@@ -1,6 +1,7 @@
 const io = require('socket.io-client')
 const config = require('../config')
 const userInfo = config.userInfo
+const command = require('../services/exec-release')
 
 class PushService {
 
@@ -19,8 +20,9 @@ class PushService {
   }
   listenPush() {
     this.client.on('message', ({ message, msgId, roomId }) => {
-      console.log(message, msgId, roomId)
+      console.log('message', message, msgId, roomId)
       this.client.emit('confirmRecept', { roomId, msgId})
+      command.execRelease(message)
     })
   }
 }
